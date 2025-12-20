@@ -25,11 +25,11 @@ async function seedData() {
   try {
     // Create demo admin user
     console.log("Creating admin user...")
-    const adminCred = await createUserWithEmailAndPassword(auth, "admin@airpurify.com", "admin123")
+    const adminCred = await createUserWithEmailAndPassword(auth, "admin2@airpurify.com", "admin123")
 
     await setDoc(doc(db, "users", adminCred.user.uid), {
       username: "Admin",
-      email: "admin@airpurify.com",
+      email: "admin2@airpurify.com",
       role: "admin",
       deviceId: null,
       createdAt: new Date().toISOString(),
@@ -38,11 +38,11 @@ async function seedData() {
 
     // Create demo regular user
     console.log("Creating regular user...")
-    const userCred = await createUserWithEmailAndPassword(auth, "user@airpurify.com", "user123")
+    const userCred = await createUserWithEmailAndPassword(auth, "user2@airpurify.com", "user123")
 
     await setDoc(doc(db, "users", userCred.user.uid), {
       username: "User1",
-      email: "user@airpurify.com",
+      email: "user2@airpurify.com",
       role: "user",
       deviceId: "DEVICE001",
       createdAt: new Date().toISOString(),

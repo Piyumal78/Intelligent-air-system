@@ -1,14 +1,24 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { User, Lock, ShieldCheck, AlertCircle } from "lucide-react"
 import { useAuth } from "../context/AuthContext"
 import { useNavigate } from "react-router-dom"
 
 const Login = () => {
   const [isAdmin, setIsAdmin] = useState(false)
-  const { login, error: authError } = useAuth()
+  const { login, error: authError, currentUser } = useAuth()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (currentUser) {
+      if (currentUser.role === 'admin' || currentUser.role === 'Admin') {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+    }
+  }, [currentUser, navigate]);
   const [formData, setFormData] = useState({ email: "", password: "" })
   const [localError, setLocalError] = useState("")
   const [loading, setLoading] = useState(false)
@@ -21,13 +31,10 @@ const Login = () => {
     try {
       console.log("[v0] Login attempt:", formData.email)
       await login(formData.email, formData.password)
-
-      // Navigation is handled by the auth state change
-      navigate(isAdmin ? "/admin" : "/")
+      // Navigation is handled by the useEffect
     } catch (error) {
       console.error("[v0] Login failed:", error)
       setLocalError(error.message || "Invalid email or password")
-    } finally {
       setLoading(false)
     }
   }
@@ -110,8 +117,8 @@ const Login = () => {
 
           <div className="mt-6 p-4 bg-slate-50 rounded-lg border border-slate-200">
             <p className="text-xs text-slate-600 font-semibold mb-2">Demo Credentials:</p>
-            <p className="text-xs text-slate-500">Admin: admin@airpurify.com / admin123</p>
-            <p className="text-xs text-slate-500">User: user@airpurify.com / user123</p>
+            <p className="text-xs text-slate-500">Admin: admin2@airpurify.com / admin123</p>
+            <p className="text-xs text-slate-500">User: user2@airpurify.com / user123</p>
           </div>
         </div>
 
